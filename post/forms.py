@@ -1,11 +1,13 @@
 from django import forms
 
-#There is two forms
-#1) ModelForm - forms based on model fields
-#2) Form - simple form
+from post.models import Comment
 
-class LoginForm(forms.Form):
-    username = forms.CharField()
-    login = forms.CharField(widget=forms.PasswordInput)
-
-
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['comment']
+        widgets={
+            "comment": forms.TextInput(attrs={
+                "class":"form-control"
+            })
+        }

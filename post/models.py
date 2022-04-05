@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime
 
 # Create your models here.
 
@@ -34,6 +35,22 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name="Автор",
+        related_name="comments",
+        null=True,
+    )
     name = models.CharField("name", max_length=50)
     comment = models.TextField("Comment")
     post = models.ForeignKey(Post,on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True, null=True)
+
+    class Meta:
+        verbose_name = "Комментарий"
+        verbose_name_plural = "Комментарии"
+        ordering = ['-created']
+
+    def __str__(self):
+        return str(self.comment)[:50]
